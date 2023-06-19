@@ -18,10 +18,7 @@ class BuyScreenController extends GetxController
     data.clear();
     for(int i =0;i<dataarray.length;i++ )
       {
-        for(int j =0;j<dataarray[i].length;j++)
-          {
-            data.add(dataarray[i][j]);
-          }
+        data.add(dataarray[i]);
       }
     print("================================== data");
     print(data);

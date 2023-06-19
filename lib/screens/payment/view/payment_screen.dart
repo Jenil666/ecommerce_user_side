@@ -240,13 +240,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                   InkWell(
                     onTap: () async {
-                      bool check = await FireBaseHelper.fireBaseHelper.buyProductRecords(getxCartScreenController.cartProductId);
+                      bool check = await FireBaseHelper.fireBaseHelper.buyProductRecords(getxMasterController.cartProductId);
                       // getxCartScreenController.
                       if(check == true)
                         {
                           Get.snackbar("Ecommerce", "Products Are Deployed For Shipping");
-                          getxCartScreenController.cartProductId.clear();
-                          FireBaseHelper.fireBaseHelper.addToCart(productId: getxCartScreenController.cartProductId);
+                          getxMasterController.cartProductId.clear();
+                          FireBaseHelper.fireBaseHelper.addToCart(listOfProductId: getxMasterController.cartProductId,addinCart: false);
                           getxCartScreenController.cartData.clear();
                           getxBuyScreenController.getBuyDataOfUser();
                         }

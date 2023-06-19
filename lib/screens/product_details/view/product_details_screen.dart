@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_user_side/screens/cart/controller/cart_screen_controller.dart';
 import 'package:ecommerce_user_side/screens/product_details/controller/product_details_controller.dart';
@@ -27,8 +29,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
   @override
   Widget build(BuildContext context) {
-    ProductDetailsController getxProductDetailsController =
-        Get.put(ProductDetailsController());
+    ProductDetailsController getxProductDetailsController = Get.put(ProductDetailsController());
     MasterController getxMasterController = Get.put(MasterController());
     int index = Get.arguments;
     return SafeArea(
@@ -103,9 +104,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                           Text("FREE SHIPPING",style: TextStyle(color: Color(0xff909090),fontSize: 10.sp),),
                           Spacer(),
                           Image.asset("${getxProductDetailsController.star}",height: 15),
-                          Text("Comming soon",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 11.sp),),
+                          Text("${getxMasterController.hotSalesData[index].review}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 11.sp),),
                           // Text("${getxMasterController.hotSalesData[index].ratings}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 11.sp),),
-                          Text("Comming soon",style: TextStyle(color: Color(0xff909090),fontSize: 8.sp),),
+                          Text("(${getxMasterController.hotSalesData[index].totalReview})",style: TextStyle(color: Color(0xff909090),fontSize: 8.sp),),
                           // Text("(${getxMasterController.hotSalesData[index].reviewers})",style: TextStyle(color: Color(0xff909090),fontSize: 8.sp),),
                         ],
                       ),
@@ -130,50 +131,55 @@ class _ProductDetailsState extends State<ProductDetails> {
                       SizedBox(height: 2.h,),
                       Row(
                         children: [
-                          Text("${getxMasterController.hotSalesData[index].price}",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.deepOrange,fontSize: 18.sp),),
+                          Text("₹${getxMasterController.hotSalesData[index].price}",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.deepOrange,fontSize: 18.sp),),
                         ],
                       ),
                       Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          InkWell(
-                            onTap:() {
-                              print("==================================== id");
-                              print(getxMasterController.hotSalesData[index].id);
-                              getxCartScreenController.cartProductId.add(getxMasterController.hotSalesData[index].id);
-                              FireBaseHelper.fireBaseHelper.addToCart(productId: getxCartScreenController.cartProductId);
-                            },
-                            child: Container(
-                              height: 4.5.h,
-                              width: 30.w,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text("Add to Cart",style: TextStyle(color: Colors.black45),),
-                                  Icon(Icons.shopping_cart,size: 15,color: Colors.black45,),
-                                ],
-                              ),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: Color(0xffC4C4C4))
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              getxCartScreenController.cartProductId.add(getxMasterController.hotSalesData[index].id);
-                              FireBaseHelper.fireBaseHelper.addToCart(productId: getxCartScreenController.cartProductId);
-                              Get.back();
-                            },
-                            child: Container(
-                              height: 5.5.h,
-                              width: 50.w,
-                              alignment: Alignment.center,
-                              child: Text("Buy Now",style: TextStyle(fontSize: 12.sp,color:Colors.white),),
-                              decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(20)
+                          Obx(
+                            () =>  InkWell(
+                              onTap: () async {
+                                getxCartScreenController.addToCart.clear();
+                                getxProductDetailsController.addToCart.value == true;
+                                // Timer(Duration(seconds: 2), () {getxProductDetailsController.addToCart.value == false;});
+                                print("======================= clicked");
+                                // getxCartScreenController.cartProductId.clear();
+                                getxCartScreenController.addToCart.add(getxMasterController.hotSalesData[index].id);
+                                int check = await FireBaseHelper.fireBaseHelper.addToCart(listOfProductId: getxCartScreenController.addToCart,addinCart: true);
+                                if(check == 2)
+                                  {
+                                    print('done');
+                                    Get.snackbar("Ecommerce", "Product Alreade available In Your Cart",onTap: (snack) {
+                                      Get.toNamed('/cart');
+                                    },);
+                                    Get.back();
+                                  }
+                                else if(check == 3)
+                                  {
+                                    Get.snackbar("Ecommerce", "Unable Add In Cart");
+                                  }
+                                else if(check == 4)
+                                  {
+                                    Get.snackbar("Ecommerce", "Product Alreade available In Your Cart",onTap: (snack) {
+                                      Get.toNamed('/cart');
+                                    },);
+                                  }
+                                else if(check == 5)
+                                  {
+                                    Get.snackbar("Ecommerce", "Unknoen Error Uccer");
+                                  }
+                              },
+                              child: Container(
+                                height: 5.5.h,
+                                width: 84.w,
+                                alignment: Alignment.center,
+                                child: getxProductDetailsController.addToCart == false?Text("Add to cart",style: TextStyle(fontSize: 12.sp,color:Colors.white),):CircularProgressIndicator(color: Colors.white,),
+                                decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(20)
+                                ),
                               ),
                             ),
                           ),

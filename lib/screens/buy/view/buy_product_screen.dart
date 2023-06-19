@@ -93,7 +93,7 @@ class _BuyProductScreenState extends State<BuyProductScreen> {
             },);
           }
         return Center(child: CircularProgressIndicator(color: Colors.deepOrange,));
-    },):Center(child: CircularProgressIndicator()),
+    },):Center(child: Container()),
       ),));
   }
 }

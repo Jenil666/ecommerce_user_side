@@ -10,7 +10,9 @@ class HotSalesModal extends GetxController {
       quantity,
       id,
       discountedPrice,
-      image;
+      image,
+      review,
+      totalReview;
 
   HotSalesModal(
       {this.category,
@@ -22,5 +24,7 @@ class HotSalesModal extends GetxController {
       this.quantity,
       this.id,
       this.discountedPrice,
-      this.image});
+      this.image,
+      this.review,
+      this.totalReview});
 }

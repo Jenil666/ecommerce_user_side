@@ -181,7 +181,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       bool? check = await FireBaseHelper.fireBaseHelper.sinhInThroughGoogle();
                       if(check == true)
                         {
-                          Get.offAllNamed('/generalInfo');
+                          Get.offAllNamed('/navagation');
                         }
                     },
                     child: Container(

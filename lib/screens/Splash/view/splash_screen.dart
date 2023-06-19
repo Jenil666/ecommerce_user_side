@@ -17,10 +17,12 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   bool? check;
+  MasterController getxMasterController = Get.put(MasterController());
   void initState() {
     // TODO: implement initState
     super.initState();
     check = FireBaseHelper.fireBaseHelper.storeLogin();
+    getxMasterController.getCartData();
   }
   @override
   Widget build(BuildContext context) {

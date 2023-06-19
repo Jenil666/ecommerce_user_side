@@ -8,14 +8,14 @@ class CartScreenController extends GetxController
 {
   RxList<CartModal> cartData = <CartModal>[].obs;
   String id="";
-  RxList cartProductId = [].obs;
+  List addToCart = [];
+  // RxList cartProductId = [].obs;
   RxBool buyButtonCircularPRogressIndicator = false.obs;
-  void getIdOfProducts()
-  async {
-    DocumentSnapshot documentSnapshot = await FireBaseHelper.fireBaseHelper.readCart();
-    Map m1 = documentSnapshot.data() as Map;
-    var list = m1['Product Id'];
-    cartProductId.value = list;
-  }
+  // void getIdOfProducts() async {
+  //   DocumentSnapshot documentSnapshot = await FireBaseHelper.fireBaseHelper.readCart();
+  //   Map m1 = documentSnapshot.data() as Map;
+  //   var list = m1['Product Id'];
+  //   cartProductId.value = list;
+  // }
 
 }

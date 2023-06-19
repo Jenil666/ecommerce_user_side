@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_user_side/screens/cart/controller/cart_screen_controller.dart';
@@ -24,7 +26,7 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getxCartScreenController.getIdOfProducts();
+    getxMasterController.getCartData();
   }
   @override
   Widget build(BuildContext context) {
@@ -33,8 +35,8 @@ class _CartScreenState extends State<CartScreen> {
           backgroundColor: const Color(0xffF7F6F4),
           // appBar: AppBar(title: Text("Cart Screen")),
           body: Obx(
-            () =>  getxCartScreenController.cartProductId.isNotEmpty?StreamBuilder(
-              stream: FireBaseHelper.fireBaseHelper.getProductsBasedOnProductId(getxCartScreenController.cartProductId),
+            () =>  getxMasterController.cartProductId.isNotEmpty?StreamBuilder(
+              stream: FireBaseHelper.fireBaseHelper.getProductsBasedOnProductId(getxMasterController.cartProductId),
               builder: (context, snapshot) {
                 if(snapshot.hasError)
                 {
@@ -101,7 +103,12 @@ class _CartScreenState extends State<CartScreen> {
                                 ),
                                 const Spacer(),
                                 TextButton(onPressed: () async {
-                                  getxCartScreenController.cartProductId.removeAt(index);
+                                  getxCartScreenController.buyButtonCircularPRogressIndicator.value = true;
+                                  getxMasterController.cartProductId.removeAt(index);
+                                  getxCartScreenController.cartData.removeAt(index);
+                                  int check = await FireBaseHelper.fireBaseHelper.addToCart(listOfProductId: getxMasterController.cartProductId,addinCart: false);
+                                  Timer(Duration(seconds: 2), () {getxMasterController.getCartData();});
+                                  Timer(Duration(seconds: 2), () {getxMasterController.totalAmount(getxCartScreenController.cartData);getxCartScreenController.buyButtonCircularPRogressIndicator.value = false;});
                                 }, child: Text("Remove",style: TextStyle(color: Colors.deepOrange,fontSize: 8.sp),),)
                               ],
                             ),

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -63,6 +64,7 @@ class FireBaseHelper {
 
   Future<bool?> signOut() async {
     bool? check;
+    Shr.shr.setData(false);
     await firebaseAuth.signOut().then((value) async {
       await GoogleSignIn().signOut();
       getxMasterController.getGeneralInfo = false;
@@ -100,10 +102,10 @@ class FireBaseHelper {
       }
   }
 
-  String? getUserData() {
+  User getUserData() {
     User? user = firebaseAuth.currentUser;
-    String? email = user!.email;
-    return email;
+    String? emailail = user!.email;
+    return user;
   }
 
   Future<String?> getFmcToken() async {
@@ -119,6 +121,7 @@ class FireBaseHelper {
       "Email": data.email,
       "FmcToken": data.fmcToken,
       "Address": data.address,
+      "Uid": data.uid,
     });
   }
 
@@ -127,24 +130,71 @@ class FireBaseHelper {
     return user;
   }
 
-  Future<bool> addToCart({productId}) async {
+   Future<int> addToCart({List? listOfProductId,bool? addinCart}) async {
+    MasterController getxMasterController = Get.put(MasterController());
     ProductDetailsController getxProductDetailsController = Get.put(ProductDetailsController());
-    getxProductDetailsController.addToCart;
+
+    bool cartCheck = true;
+    getxProductDetailsController.addToCart.value = true;
     User? user = userData();
-    List data = productId;
-    if (user?.uid != null) {
-    return  inse.collection("Cart").doc('${user?.uid}').set({
-        "Product Id": productId
-      }).then((value) {
-        return true;
-      });
+    Set products = {};
+    List data = [];
+    int lastIndex = 0;
+
+    products.addAll(getxMasterController.cartProductId);
+    products.addAll(listOfProductId!);
+    data.addAll(products);
+    lastIndex = data.length;
+
+    for (int i = 0; i < getxMasterController.cartProductId.length; i++) {
+      if (getxMasterController.cartProductId[i] == data[lastIndex-1]) {
+        cartCheck = false;
+        break;
+      }
+    }
+    getxMasterController.getCartData();
+
+    if(addinCart == false)
+      {
+        return inse.collection("Cart").doc('${user?.uid}').set({"Product Id": listOfProductId
+        }).then((value) {
+          // add to cart
+          getxProductDetailsController.addToCart.value = false;
+          return 2;
+        });
+      }
+    if (cartCheck == true && addinCart == true) {
+      if (user?.uid != null) {
+         return inse.collection("Cart").doc('${user?.uid}').set({"Product Id": data
+        }).then((value) {
+          // add to cart
+           getxProductDetailsController.addToCart.value = false;
+           return 2;
+        });
+      }
+      else {
+        data.clear();
+        addToCart();
+        // fail to add in cart
+        getxProductDetailsController.addToCart.value = false;
+        return 3;
+      }
     }
     else {
-      data.clear();
-      addToCart();
-      return await false;
-    }
-  }
+        if(cartCheck == false)
+          {
+            // available in cart List
+            getxProductDetailsController.addToCart.value = false;
+            return 4;
+          }
+        else
+          {
+            // error unknown
+            getxProductDetailsController.addToCart.value = false;
+            return 5;
+          }
+      }
+   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> readCart() {
     User? user = firebaseAuth.currentUser;
@@ -155,18 +205,26 @@ class FireBaseHelper {
     return  FirebaseFirestore.instance.collection('Product').where(FieldPath.documentId, whereIn: id).snapshots();
   }
 
-  Future<bool> buyProductRecords(List data) {
+  bool buyProductRecords(List data) {
     CartScreenController getx = Get.put(CartScreenController());
     getx.buyButtonCircularPRogressIndicator.value = true;
     User? user = userData();
-    return inse.collection("Requester For Purchase").add({
-      "Uid":user!.uid,
-      "products":data
-    }).then((value) {
+    try
+    {
+      for(int i=0;i<data.length;i++) {
+        User? user = userData();
+        inse.collection("Requester For Purchase").add({
+          "Uid":user!.uid,
+          "products":data[i]
+        });
+      }
       getx.buyButtonCircularPRogressIndicator.value = false;
-          return true;
-    });
-
+      return true;
+    }
+    catch(e)
+    {
+      return false;
+    }
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> readBuyData() {

@@ -13,4 +13,5 @@ class GeneralDataEntryScreenController extends GetxController {
   //todo variables for user data
   String? fmcToken;
   String? email;
+  String? uid;
 }

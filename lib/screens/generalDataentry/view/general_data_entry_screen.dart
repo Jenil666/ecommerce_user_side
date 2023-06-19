@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ecommerce_user_side/screens/generalDataentry/controller/general_data_enter_screen_controller.dart';
 import 'package:ecommerce_user_side/screens/generalDataentry/modal/user_data_modal.dart';
 import 'package:ecommerce_user_side/utils/fire_base_helper.dart';
@@ -26,8 +28,10 @@ class _GeneralDataEntryScreenState extends State<GeneralDataEntryScreen> {
   }
   Future<void> getData()
   async {
+    var user = await FireBaseHelper.fireBaseHelper.getUserData();
     getxGeneralDataEntryScreenController.fmcToken = await FireBaseHelper.fireBaseHelper.getFmcToken() as String?;
-    getxGeneralDataEntryScreenController.email = await FireBaseHelper.fireBaseHelper.getUserData();
+    getxGeneralDataEntryScreenController.email = user.email;
+    getxGeneralDataEntryScreenController.uid = user.uid;
   }
   @override
   Widget build(BuildContext context) {
@@ -151,6 +155,7 @@ class _GeneralDataEntryScreenState extends State<GeneralDataEntryScreen> {
                       address: getxGeneralDataEntryScreenController.txtAddress.text,
                       fmcToken: getxGeneralDataEntryScreenController.fmcToken,
                       mobileNumber: getxGeneralDataEntryScreenController.txtMobileNumber.text,
+                      uid: getxGeneralDataEntryScreenController.uid,
                     );
                     FireBaseHelper.fireBaseHelper.collectionOfUserData(data);
                     Shr.shr.setData(true);

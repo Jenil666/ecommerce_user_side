@@ -159,6 +159,8 @@ class _ReadDataScreenState extends State<ReadDataScreen> {
                           String  quantity = data['Quantity'];
                           String id = x.id;
                           String image = data['image'];
+                          String review = data['Review'];
+                          String totalReview = data['Total Review'];
                           HotSalesModal t1 = HotSalesModal(
                             description: description,
                             price: price,
@@ -170,6 +172,8 @@ class _ReadDataScreenState extends State<ReadDataScreen> {
                             quantity: quantity,
                             id: id,
                             image: image,
+                            review: review,
+                            totalReview: totalReview
                           );
                           getxMasterController.hotSalesData.add(t1);
                         }

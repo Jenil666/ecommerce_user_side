@@ -10,6 +10,7 @@ import 'package:ecommerce_user_side/screens/product_details/view/product_details
 import 'package:ecommerce_user_side/screens/register/view/register_screen.dart';
 import 'package:ecommerce_user_side/screens/selection/view/selection_screen.dart';
 import 'package:ecommerce_user_side/screens/sign_in/view/sign_in_screen.dart';
+import 'package:ecommerce_user_side/screens/userDetails/view/user_details.dart';
 import 'package:ecommerce_user_side/utils/fire_base_helper.dart';
 import 'package:ecommerce_user_side/utils/notification_helper.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -30,7 +31,7 @@ async {
            Sizer(
         builder: (context, orientation, deviceType) =>  GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          // initialRoute: '/buy',
+          // initialRoute: '/userDetails',
           getPages: [
             GetPage(name: '/', page: () => SplashScreen(),transition: Transition.downToUp),
             GetPage(name: '/select', page: () => SelectionScreen(),transition: Transition.downToUp),
@@ -44,6 +45,7 @@ async {
             GetPage(name: '/pay', page: () => PaymentScreen(),transition: Transition.downToUp),
             GetPage(name: '/cart', page: () => CartScreen(),transition: Transition.downToUp),
             GetPage(name: '/buy', page: () => BuyProductScreen(),transition: Transition.downToUp),
+            GetPage(name: '/userDetails', page: () => UserDetaails(),transition: Transition.downToUp),
           ],
         ),
       ),

@@ -25,13 +25,11 @@ class BottomNavagationScreen extends StatelessWidget {
           ReadDataScreen(),
           CartScreen(),
           BuyProductScreen(),
-          ReadDataScreen(),
         ],
         items: [
           PersistentBottomNavBarItem(icon: Icon(Icons.home_filled,),title: 'Home',activeColorPrimary: Colors.orange,inactiveColorPrimary: Color(0xffCFCFCF)),
           PersistentBottomNavBarItem(icon: Icon(Icons.shopping_bag_outlined),title: 'Cart',activeColorPrimary: Colors.orange,inactiveColorPrimary: Color(0xffCFCFCF),),
           PersistentBottomNavBarItem(icon: Icon(Icons.offline_pin_rounded),title: 'Ordered',activeColorPrimary: Colors.orange,inactiveColorPrimary: Color(0xffCFCFCF)),
-          PersistentBottomNavBarItem(icon: Icon(Icons.person_outlined),title: 'Profile',activeColorPrimary: Colors.orange,inactiveColorPrimary: Color(0xffCFCFCF)),
         ],
         controller: getx.preController,
         navBarStyle: NavBarStyle.style1,
