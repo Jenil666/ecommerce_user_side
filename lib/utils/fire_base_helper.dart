@@ -163,6 +163,8 @@ class FireBaseHelper {
           return 2;
         });
       }
+
+
     if (cartCheck == true && addinCart == true) {
       if (user?.uid != null) {
          return inse.collection("Cart").doc('${user?.uid}').set({"Product Id": data
@@ -234,5 +236,15 @@ class FireBaseHelper {
 
   Future<QuerySnapshot<Map<String, dynamic>>> readCategory() {
     return inse.collection("Category").get();
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> readDispatchData() {
+    User? user = getUserData();
+    return inse.collection('Dispatch').where("Uid",isEqualTo: "${user.uid}").get();
+  }
+
+
+  Future<QuerySnapshot<Map<String, dynamic>>> readDataFromId({id}) {
+    return inse.collection('Product').where(FieldPath.documentId,isEqualTo: id).get();
   }
 }

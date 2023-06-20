@@ -95,6 +95,10 @@ class _ProductDetailsState extends State<ProductDetails> {
             Expanded(
               child: Container(
                 width: 100.w,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8.h),topRight: Radius.circular(8.h),),
+                ),
                 child: Padding(
                   padding: EdgeInsets.all(30),
                   child: Column(
@@ -150,11 +154,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 int check = await FireBaseHelper.fireBaseHelper.addToCart(listOfProductId: getxCartScreenController.addToCart,addinCart: true);
                                 if(check == 2)
                                   {
-                                    print('done');
-                                    Get.snackbar("Ecommerce", "Product Alreade available In Your Cart",onTap: (snack) {
+                                    print('===== = = = done');
+                                    Get.snackbar("Ecommerce", "Data Added In Cart",onTap: (snack) {
                                       Get.toNamed('/cart');
                                     },);
-                                    Get.back();
                                   }
                                 else if(check == 3)
                                   {
@@ -187,10 +190,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
                     ],
                   ),
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8.h),topRight: Radius.circular(8.h),),
                 ),
               ),
             ),

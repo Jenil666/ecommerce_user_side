@@ -33,8 +33,7 @@ class NotificationHelper
   }
 
   Future<void> showNotification({required title, required body}) async {
-    AndroidNotificationDetails androidNotificationDetails =
-    AndroidNotificationDetails(
+    AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
       "123",
       "Jenil",
       sound: RawResourceAndroidNotificationSound("aleart"),
@@ -84,16 +83,16 @@ class NotificationHelper
         UILocalNotificationDateInterpretation.absoluteTime);
   }
 
-  Future<void> bidPicture() async {
-    String link =
-        "https://pbs.twimg.com/media/FtHeBl1aEAQOjks?format=jpg&name=large";
+  Future<void> bidPicture({String? title, String? body, String? image}) async {
+    String link = "$image";
+    // String link = "https://pbs.twimg.com/media/FtHeBl1aEAQOjks?format=jpg&name=large";
     String base64 = await uriToBase64(link);
     BigPictureStyleInformation big = await BigPictureStyleInformation(
         ByteArrayAndroidBitmap.fromBase64String(base64));
     DarwinNotificationDetails darwinNotificationDetails =
     DarwinNotificationDetails();
     AndroidNotificationDetails androidNotificationDetails =
-    AndroidNotificationDetails("1", "Jenil", styleInformation: big);
+    AndroidNotificationDetails("$title", "$body", styleInformation: big);
     NotificationDetails notificationDetails = NotificationDetails(
         iOS: darwinNotificationDetails, android: androidNotificationDetails);
     await flutterLocalNotificationsPlugin.show(
@@ -126,6 +125,13 @@ class NotificationHelper
       if (msg.notification != null) {
         String? title = msg.notification!.title;
         String? body = msg.notification!.body;
+        String? try1 = msg.notification!.bodyLocKey;
+        List? try2 = msg.notification!.bodyLocArgs;
+        List? try3 = msg.notification!.titleLocArgs;
+        print("======================= check");
+        print(try1);
+        print(try2);
+        print(try3);
         showNotification(title: title, body: body);
       }
     });

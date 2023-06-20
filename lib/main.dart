@@ -1,3 +1,4 @@
+import 'package:ecommerce_user_side/screens/Dispatched/view/dispatched_screen.dart';
 import 'package:ecommerce_user_side/screens/ReadData/view/read_data_screen.dart';
 import 'package:ecommerce_user_side/screens/Splash/view/splash_screen.dart';
 import 'package:ecommerce_user_side/screens/buy/view/buy_product_screen.dart';
@@ -46,6 +47,7 @@ async {
             GetPage(name: '/cart', page: () => CartScreen(),transition: Transition.downToUp),
             GetPage(name: '/buy', page: () => BuyProductScreen(),transition: Transition.downToUp),
             GetPage(name: '/userDetails', page: () => UserDetaails(),transition: Transition.downToUp),
+            GetPage(name: '/dispatched', page: () => DispatchedScreen(),transition: Transition.downToUp),
           ],
         ),
       ),
